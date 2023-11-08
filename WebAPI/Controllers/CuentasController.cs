@@ -9,7 +9,7 @@ using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/cuentas")]
     [ApiController]
     public class CuentasController : ControllerBase
     {
