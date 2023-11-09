@@ -109,6 +109,7 @@ namespace WebAPI.Controllers
             return CreatedAtAction("GetCuenta", new { id = cuenta.NumeroTarjeta }, cuenta);
         }
 
+        /*
         // DELETE: api/Cuentas/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCuenta(string id)
@@ -128,6 +129,7 @@ namespace WebAPI.Controllers
 
             return NoContent();
         }
+        */
 
         private bool CuentaExists(string id)
         {
