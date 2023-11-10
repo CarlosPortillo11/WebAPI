@@ -23,5 +23,7 @@ namespace WebAPI.Models
             base.ConfigureConventions(builder);
         }
 
+        public DbSet<Pago> Pago { get; set; }
+
     }
 }
