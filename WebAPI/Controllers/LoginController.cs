@@ -36,7 +36,7 @@ namespace WebAPI.Controllers
                 
             }catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500);
             }
 
         }

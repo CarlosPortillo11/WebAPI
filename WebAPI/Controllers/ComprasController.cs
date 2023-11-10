@@ -21,16 +21,80 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/Compras
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Compra>>> GetCompra()
+        /*
+            [HttpGet]
+            public async Task<ActionResult<IEnumerable<Compra>>> GetCompra()
+            {
+              if (_context.Compra == null)
+              {
+                  return NotFound();
+              }
+                return await _context.Compra.ToListAsync();
+            }
+         */
+
+        //GET: api/compras/tarjeta/4390930039010979
+        [HttpGet("tarjeta/{numerotarjeta}")]
+        public async Task<ActionResult<IEnumerable<Compra>>> GetCompraByNumber(string numerotarjeta,[FromQuery] GetCompraFilters filtros)
         {
-          if (_context.Compra == null)
-          {
-              return NotFound();
-          }
-            return await _context.Compra.ToListAsync();
+            try 
+            {
+                if (_context.Compra == null)
+                {
+                    return NotFound();
+                }
+
+                List<Compra> compra = new List<Compra>();
+
+                if (filtros.mes == null)
+                {
+                    compra =  _context.Compra.Where(u => u.NumeroTarjeta == numerotarjeta).ToList();
+                }
+                else
+                {
+                    compra = _context.Compra.Where(u => u.NumeroTarjeta == numerotarjeta && u.Fecha.Month == filtros.mes).ToList();
+                }
+
+                if (compra == null)
+                {
+                    return BadRequest("No se encontró ninguna compra asociada a la tarjeta");
+                }
+
+                return Ok(compra);
+
+            }catch
+            {
+                return StatusCode(500);
+            }
         }
 
+        //GET: api/compras/montoreciente/4390930039010979
+        [HttpGet("montoreciente/{numerotarjeta}")]
+        public async Task<ActionResult<decimal>> GetMontoReciente(string numerotarjeta, [FromQuery] GetCompraFilters filtros)
+        {
+            try
+            {
+                if (_context.Compra == null)
+                {
+                    return NotFound();
+                }
+
+                
+                decimal montoRecienteTotal = _context.Compra.Where(u => u.NumeroTarjeta == numerotarjeta && u.Fecha.Month >= filtros.mesanterior && u.Fecha.Month <= filtros.mes).Select(u => u.Monto).Sum();
+
+                if (montoRecienteTotal == null)
+                {
+                    return BadRequest("No se encontró ninguna compra asociada a la tarjeta");
+                }
+
+                return Ok(montoRecienteTotal);
+
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+        }
 
         // GET: api/Compras/5
         [HttpGet("{id}")]
@@ -48,33 +112,6 @@ namespace WebAPI.Controllers
             }
 
             return compra;
-        }
-
-        //GET: api/compras/tarjeta/4390930039010979
-        [HttpGet("tarjeta/{numerotarjeta}")]
-        public async Task<ActionResult<Compra>> GetCompraByNumber(string numerotarjeta)
-        {
-            try 
-            {
-                if (_context.Compra == null)
-                {
-                    return NotFound();
-                }
-                //List<Compra> compra =  _context.Compra.Where(u => u.NumeroTarjeta == numerotarjeta).ToList();
-                //var compra = await _context.Compra.FindAsync(id);
-                var compra = _context.Compra.Where(u => u.NumeroTarjeta == numerotarjeta);
-
-                if (compra == null)
-                {
-                    return BadRequest("No se encontró ninguna compra asociada a la tarjeta");
-                }
-
-                return Ok(compra);
-
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
 
 
@@ -150,5 +187,12 @@ namespace WebAPI.Controllers
         {
             return (_context.Compra?.Any(e => e.id == id)).GetValueOrDefault();
         }
+    }
+
+
+    public class GetCompraFilters
+    {
+        public int? mesanterior {  get; set; }
+        public int? mes { get; set; }
     }
 }
