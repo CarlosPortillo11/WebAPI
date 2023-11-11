@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/Cuentas/5
-        [HttpGet("{id}")]
+        [HttpGet("{numerotarjeta}")]
         public async Task<ActionResult<Cuenta>> GetCuenta(string id)
         {
           if (_context.Cuenta == null)

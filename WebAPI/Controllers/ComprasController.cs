@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -124,10 +125,44 @@ namespace WebAPI.Controllers
           {
               return Problem("Entity set 'APIContext.Compra'  is null.");
           }
-            _context.Compra.Add(compra);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCompra", new { id = compra.id }, compra);
+            using (var transactionScope = new TransactionScope()) 
+            {
+                try
+                {
+                    var cuentaActual = await _context.Cuenta.FindAsync(compra.NumeroTarjeta);
+                    decimal nuevoSaldo = cuentaActual.SaldoActual - compra.Monto;
+
+                    if(cuentaActual.LimiteCredito <= nuevoSaldo)
+                    {
+                        return StatusCode(400);
+                    }
+
+                    _context.Compra.Add(compra);
+                    int rowAffected = await _context.SaveChangesAsync();
+
+                    if (rowAffected > 0)
+                    {
+                        var cuenta = await _context.Cuenta.FindAsync(compra.NumeroTarjeta);
+                        cuenta.SaldoActual += compra.Monto;
+                        cuenta.SaldoDisponible -= compra.Monto;
+                        cuenta.InteresBonificable = cuenta.SaldoActual;
+                        await _context.SaveChangesAsync();
+
+                        transactionScope.Complete();
+
+                        return CreatedAtAction("GetCompra", new { id = compra.id }, compra);
+                    }
+
+                    return StatusCode(500);
+
+
+                }catch (Exception ex) 
+                {
+                    return StatusCode(500);
+                }
+            }
+
         }
 
         /*
@@ -156,6 +191,7 @@ namespace WebAPI.Controllers
         {
             return (_context.Compra?.Any(e => e.id == id)).GetValueOrDefault();
         }
+
     }
 
 
