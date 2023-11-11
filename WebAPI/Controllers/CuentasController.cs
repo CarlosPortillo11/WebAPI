@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Cuentas
+        // GET: api/cuentas
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cuenta>>> GetCuentas()
         {
@@ -31,15 +31,15 @@ namespace WebAPI.Controllers
             return await _context.Cuenta.ToListAsync();
         }
 
-        // GET: api/Cuentas/5
+        // GET: api/cuentas/################
         [HttpGet("{numerotarjeta}")]
-        public async Task<ActionResult<Cuenta>> GetCuenta(string id)
+        public async Task<ActionResult<Cuenta>> GetCuenta(string numerotarjeta)
         {
           if (_context.Cuenta == null)
           {
               return NotFound();
           }
-            var cuenta = await _context.Cuenta.FindAsync(id);
+            var cuenta = await _context.Cuenta.FindAsync(numerotarjeta);
 
             if (cuenta == null)
             {
@@ -49,54 +49,23 @@ namespace WebAPI.Controllers
             return cuenta;
         }
 
-        // PUT: api/Cuentas/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCuenta(string id, Cuenta cuenta)
-        {
-            if (id != cuenta.NumeroTarjeta)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(cuenta).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CuentaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Cuentas
+        // POST: api/cuentas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Cuenta>> PostCuenta(Cuenta cuenta)
+        public async Task<ActionResult<Cuenta>> PostCuenta(Cuenta nuevacuenta)
         {
           if (_context.Cuenta == null)
           {
-              return Problem("Entity set 'APIContext.Cuentas'  is null.");
+              return Problem("El contexto de la base de datos: 'APIContext.Cuentas' devolvió nulo.");
           }
-            _context.Cuenta.Add(cuenta);
+            _context.Cuenta.Add(nuevacuenta);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (CuentaExists(cuenta.NumeroTarjeta))
+                if (CuentaExists(nuevacuenta.NumeroTarjeta))
                 {
                     return Conflict();
                 }
@@ -106,30 +75,8 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return CreatedAtAction("GetCuenta", new { id = cuenta.NumeroTarjeta }, cuenta);
+            return CreatedAtAction("GetCuentas", new { id = nuevacuenta.NumeroTarjeta }, nuevacuenta);
         }
-
-        /*
-        // DELETE: api/Cuentas/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCuenta(string id)
-        {
-            if (_context.Cuenta == null)
-            {
-                return NotFound();
-            }
-            var cuenta = await _context.Cuenta.FindAsync(id);
-            if (cuenta == null)
-            {
-                return NotFound();
-            }
-
-            _context.Cuenta.Remove(cuenta);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-        */
 
         private bool CuentaExists(string id)
         {

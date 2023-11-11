@@ -10,8 +10,9 @@ namespace WebAPI.Models
         public APIContext(DbContextOptions<APIContext> options) : base (options) { }
 
         public DbSet<Cuenta> Cuenta { get; set; }
-
         public DbSet<Compra> Compra { get; set; }
+        public DbSet<Pago> Pago { get; set; }
+        public DbSet<Transaccion> Transaccion { get; set; }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder builder)
         {
@@ -22,8 +23,6 @@ namespace WebAPI.Models
 
             base.ConfigureConventions(builder);
         }
-
-        public DbSet<Pago> Pago { get; set; }
 
     }
 }

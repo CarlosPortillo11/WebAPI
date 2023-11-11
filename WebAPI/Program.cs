@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddDbContext<APIContext>(opt => opt.UseSqlServer("Data Source=localhost;Initial Catalog=AtlantidaAPI;Integrated Security=True;TrustServerCertificate=true"));
+builder.Services.AddDbContext<APIContext>(opt => opt.UseSqlServer("Data Source=localhost;Initial Catalog=AtlantidaDB;Integrated Security=True;TrustServerCertificate=true"));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

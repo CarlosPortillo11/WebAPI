@@ -143,11 +143,13 @@ namespace WebAPI.Controllers
 
                     if (rowAffected > 0)
                     {
+                        /*
                         var cuenta = await _context.Cuenta.FindAsync(compra.NumeroTarjeta);
                         cuenta.SaldoActual += compra.Monto;
                         cuenta.SaldoDisponible -= compra.Monto;
                         cuenta.InteresBonificable = cuenta.SaldoActual;
                         await _context.SaveChangesAsync();
+                        */
 
                         transactionScope.Complete();
 
@@ -199,5 +201,7 @@ namespace WebAPI.Controllers
     {
         public int? mesanterior {  get; set; }
         public int? mes { get; set; }
+
+        public string tipo { get; set; }
     }
 }
