@@ -16,9 +16,9 @@ namespace WebAPI.Controllers
     {
         private readonly APIContext _context;
         private readonly ILogger _logger;
-        public decimal PorcentajeInteres { get; } = (5m/100);
+        public decimal PorcentajeInteres { get; } = (5m/100m);
 
-        public decimal PorcentajeSaldoMinimo { get; } = (5m/100);
+        public decimal PorcentajeSaldoMinimo { get; } = (5m/100m);
 
         public TransaccionesController(APIContext context, ILoggerFactory loggerFactory)
         {
