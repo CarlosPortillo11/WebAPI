@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
 
                 if(filtros.tipo == "Todas")
                 {
-                    transacciones = _context.Transaccion.Where(u => u.NumeroTarjeta == numerotarjeta).ToList();
+                    transacciones = _context.Transaccion.Where(u => u.NumeroTarjeta == numerotarjeta && u.Fecha.Month == filtros.mes).ToList();
                 }
                 else
                 {
@@ -109,14 +109,24 @@ namespace WebAPI.Controllers
 
                 decimal saldo = 0;
 
-                if (transaccion.Tipo == "Compra")
+                switch (transaccion.Tipo)
                 {
-                    saldo = cuentaActual.SaldoActual + transaccion.Monto;
+                    case "Compra":
+                            saldo = cuentaActual.SaldoActual + transaccion.Monto;
+                            if (Math.Abs(saldo) > cuentaActual.SaldoDisponible)
+                            {
+                                return BadRequest("Usted a alcanzado el límite de su credito, realizar un pago lo antes posible.");
+                            }
+                        break;
 
-                    if (Math.Abs(saldo) > cuentaActual.SaldoDisponible)
-                    {
-                        return BadRequest("Usted a alcanzado el límite de su credito, realizar un pago lo antes posible.");
-                    }
+                    case "Pago":
+                            if(Math.Abs(transaccion.Monto) > cuentaActual.SaldoActual)
+                            {
+                                return BadRequest("No puede realizar un pago mayor a su saldo.");
+                            }
+                    break;
+
+                    default: break;
                 }
 
                 _context.Transaccion.Add(transaccion);
