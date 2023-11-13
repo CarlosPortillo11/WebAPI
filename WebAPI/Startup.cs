@@ -15,7 +15,8 @@ namespace WebAPI
         {
             services.AddControllers();
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<APIContext>(opt => opt.UseSqlServer(connectionString)); 
+            services.AddDbContext<APIContext>(opt => opt.UseSqlServer(connectionString));
+            services.AddSingleton<IConfiguration>(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

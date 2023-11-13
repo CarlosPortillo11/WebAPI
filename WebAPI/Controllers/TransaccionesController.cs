@@ -6,6 +6,7 @@ using System.Transactions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
@@ -15,15 +16,16 @@ namespace WebAPI.Controllers
     public class TransaccionesController : ControllerBase
     {
         private readonly APIContext _context;
-        private readonly ILogger _logger;
+        IConfiguration _configuration;
+
         public decimal PorcentajeInteres { get; } = (5m/100m);
 
         public decimal PorcentajeSaldoMinimo { get; } = (5m/100m);
 
-        public TransaccionesController(APIContext context, ILoggerFactory loggerFactory)
+        public TransaccionesController(APIContext context, IConfiguration configuration)
         {
             _context = context;
-            _logger = loggerFactory.CreateLogger<TransaccionesController>();
+            _configuration = configuration;
         }
 
         // GET: api/Transacciones
@@ -100,6 +102,8 @@ namespace WebAPI.Controllers
         {
             try
             {
+                var porcentajeInteres = _configuration.GetValue<decimal>("PorcentajesConfigurables:PorcentajeInteres");
+                var porcentajeSaldoMinimo = _configuration.GetValue<decimal>("PorcentajesConfigurables:PorcentajeSaldoMinimo");
                 var cuentaActual = await _context.Cuenta.FindAsync(transaccion.NumeroTarjeta);
 
                 if(cuentaActual == null)
@@ -151,8 +155,8 @@ namespace WebAPI.Controllers
 
                     default: return StatusCode(500, "Tipo de transacción no válido.");
                 }
-                cuentaActual.InteresBonificable = cuentaActual.SaldoActual*PorcentajeInteres;
-                cuentaActual.CuotaMinima = cuentaActual.SaldoActual * (cuentaActual.SaldoActual*PorcentajeSaldoMinimo);
+                cuentaActual.InteresBonificable = cuentaActual.SaldoActual*(porcentajeInteres/100m);
+                cuentaActual.CuotaMinima = cuentaActual.SaldoActual*(porcentajeSaldoMinimo/100m);
                 cuentaActual.MontoPago = cuentaActual.SaldoActual;
                 cuentaActual.MontoPagoIntereses = cuentaActual.SaldoActual + cuentaActual.InteresBonificable;
                 await _context.SaveChangesAsync();

@@ -13,6 +13,8 @@ namespace WebAPI.Models
         [Required]
         public DateTime Fecha { get; set; }
         public string? Descripcion { get; set; }
+
+        [Range(1, double.MaxValue, ErrorMessage = "Realice una transacción válida.")]
         [Required]
         public decimal Monto { get; set; }
     }
