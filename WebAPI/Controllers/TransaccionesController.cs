@@ -124,9 +124,9 @@ namespace WebAPI.Controllers
                         break;
 
                     case "Pago":
-                            if(Math.Abs(transaccion.Monto) > cuentaActual.SaldoActual)
+                            if(Math.Abs(transaccion.Monto) > cuentaActual.SaldoActual || Math.Abs(transaccion.Monto) < cuentaActual.CuotaMinima)
                             {
-                                return BadRequest("No puede realizar un pago mayor a su saldo.");
+                                return BadRequest("No se ha podido procesa el pago, revise los datos e intente de nuevo");
                             }
                     break;
 
