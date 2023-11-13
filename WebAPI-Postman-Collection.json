@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "5060cc65-fbcc-421f-a459-5d6c154d104d",
+		"name": "AtlantidaAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29484735"
+	},
+	"item": [
+		{
+			"name": "Ver cuentas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7238/api/cuentas",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7238",
+					"path": [
+						"api",
+						"cuentas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear cuenta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"numeroTarjeta\": \"string\",\r\n  \"nombreTitular\": \"string\",\r\n  \"saldoActual\": 0,\r\n  \"saldoDisponible\": 0,\r\n  \"limiteCredito\": 0,\r\n  \"interesBonificable\": 0,\r\n  \"cuotaMinima\": 0,\r\n  \"montoPago\": 0,\r\n  \"montoPagoIntereses\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7238/api/cuentas",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7238",
+					"path": [
+						"api",
+						"cuentas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver estado de cuenta",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "4390930039010978"
+				},
+				"url": {
+					"raw": "https://localhost:7238/api/cuentas/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7238",
+					"path": [
+						"api",
+						"cuentas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver transacciones",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7238/api/transacciones",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7238",
+					"path": [
+						"api",
+						"transacciones"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear transacción",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"numeroTarjeta\": \"string\",\r\n  \"tipo\": \"string\",\r\n    \"fecha\": \"2023-11-13\",\r\n  \"descripcion\": \"string\",\r\n  \"monto\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7238/api/transacciones",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7238",
+					"path": [
+						"api",
+						"transacciones"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver transacciones por cuenta",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "4390930039010978",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7238/api/transacciones/?mes=11&tipo=Compra",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7238",
+					"path": [
+						"api",
+						"transacciones",
+						""
+					],
+					"query": [
+						{
+							"key": "mes",
+							"value": "11"
+						},
+						{
+							"key": "tipo",
+							"value": "Compra"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver monto reciente por cuenta",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "4390930039010978"
+				},
+				"url": {
+					"raw": "https://localhost:7238/api/transacciones/reciente?mesanterior=10&mes=11",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7238",
+					"path": [
+						"api",
+						"transacciones",
+						"reciente"
+					],
+					"query": [
+						{
+							"key": "mesanterior",
+							"value": "10"
+						},
+						{
+							"key": "mes",
+							"value": "11"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

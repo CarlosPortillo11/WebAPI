@@ -18,15 +18,11 @@ namespace WebAPI.Controllers
         private readonly APIContext _context;
         IConfiguration _configuration;
 
-        public decimal PorcentajeInteres { get; } = (5m/100m);
-
-        public decimal PorcentajeSaldoMinimo { get; } = (5m/100m);
-
         public TransaccionesController(APIContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
-        }
+            }
 
         // GET: api/Transacciones
         [HttpGet]
@@ -124,7 +120,7 @@ namespace WebAPI.Controllers
                         break;
 
                     case "Pago":
-                            if(Math.Abs(transaccion.Monto) > cuentaActual.SaldoActual || Math.Abs(transaccion.Monto) < cuentaActual.CuotaMinima)
+                            if(Math.Abs(transaccion.Monto) > cuentaActual.MontoPagoIntereses || Math.Abs(transaccion.Monto) < cuentaActual.CuotaMinima)
                             {
                                 return BadRequest("No se ha podido procesa el pago, revise los datos e intente de nuevo");
                             }
