@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Ver cuentas",
+			"name": "GetCuentas",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -27,7 +27,7 @@
 			"response": []
 		},
 		{
-			"name": "Crear cuenta",
+			"name": "PostCuenta",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -56,7 +56,7 @@
 			"response": []
 		},
 		{
-			"name": "Ver estado de cuenta",
+			"name": "GetCuenta",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -84,7 +84,7 @@
 			"response": []
 		},
 		{
-			"name": "Ver transacciones",
+			"name": "GetTransacciones",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -104,7 +104,7 @@
 			"response": []
 		},
 		{
-			"name": "Crear transacción",
+			"name": "PostTransaccion",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -133,7 +133,7 @@
 			"response": []
 		},
 		{
-			"name": "Ver transacciones por cuenta",
+			"name": "GetTransaccionesByNumber",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -176,7 +176,7 @@
 			"response": []
 		},
 		{
-			"name": "Ver monto reciente por cuenta",
+			"name": "GetTransaccionesRecientes",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
