@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
         {
             _context = context;
             _configuration = configuration;
-            }
+        }
 
         // GET: api/Transacciones
         [HttpGet]
@@ -112,9 +112,9 @@ namespace WebAPI.Controllers
                 switch (transaccion.Tipo)
                 {
                     case "Compra":
-                            saldo = cuentaActual.SaldoActual + transaccion.Monto;
-                            if (Math.Abs(saldo) > cuentaActual.SaldoDisponible)
+                            if (Math.Abs(transaccion.Monto) > cuentaActual.SaldoDisponible)
                             {
+                                
                                 return BadRequest("Usted a alcanzado el límite de su credito, realizar un pago lo antes posible.");
                             }
                         break;
